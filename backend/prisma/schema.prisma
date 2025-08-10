@@ -13,3 +13,11 @@ model Customer {
   name      String
   email     String   @unique
 }
+
+model Product {
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now())
+  name       String
+  priceCents Int
+  active     Boolean  @default(true)
+}
