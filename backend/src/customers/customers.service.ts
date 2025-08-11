@@ -13,4 +13,8 @@ export class CustomersService {
   findAll() {
     return this.prisma.customer.findMany({ orderBy: { id: 'asc' } });
   }
+
+  remove(id: number) {
+    return this.prisma.customer.delete({ where: { id } });
+  }
 }
