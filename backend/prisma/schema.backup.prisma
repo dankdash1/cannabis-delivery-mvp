@@ -8,10 +8,10 @@ datasource db {
 }
 
 model Customer {
-  id        Int       @id @default(autoincrement())
-  createdAt DateTime  @default(now())
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
   name      String
-  email     String    @unique
+  email     String   @unique
   orders    Order[]
 }
 
@@ -35,10 +35,11 @@ model Order {
 }
 
 model OrderItem {
-  id        Int      @id @default(autoincrement())
-  order     Order    @relation(fields: [orderId], references: [id])
-  orderId   Int
-  product   Product  @relation(fields: [productId], references: [id])
-  productId Int
-  qty       Int
+  id         Int      @id @default(autoincrement())
+  order      Order    @relation(fields: [orderId], references: [id])
+  orderId    Int
+  product    Product  @relation(fields: [productId], references: [id])
+  productId  Int
+  quantity   Int
+  priceCents Int
 }

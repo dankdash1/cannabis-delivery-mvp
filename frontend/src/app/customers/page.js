@@ -1,7 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-const API = 'http://localhost:4002/customers';
+import { API_BASE } from '../../lib/api';
+
+const API = `${API_BASE}/customers`;
 
 export default function CustomersPage() {
   const [customers, setCustomers] = useState([]);
@@ -9,20 +11,36 @@ export default function CustomersPage() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
 
-  const load = async () => {
-    try { const res = await fetch(API, { cache: 'no-store' }); setCustomers(await res.json()); }
-    catch { setError('Failed to load customers'); }
-  };
+  async function load() {
+    try {
+      const res = await fetch(API, { cache: 'no-store' });
+      setCustomers(await res.json());
+    } catch {
+      setError('Failed to load customers');
+    }
+  }
+
   useEffect(() => { load(); }, []);
 
-  const onSubmit = async (e) => {
-    e.preventDefault(); setSaving(true); setError('');
+  async function onSubmit(e) {
+    e.preventDefault();
+    setSaving(true);
+    setError('');
     try {
-      const res = await fetch(API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(form) });
+      const res = await fetch(API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
       if (!res.ok) throw new Error('Request failed');
-      setForm({ name: '', email: '' }); await load();
-    } catch { setError('Failed to save customer'); } finally { setSaving(false); }
-  };
+      setForm({ name: '', email: '' });
+      await load();
+    } catch {
+      setError('Failed to save customer');
+    } finally {
+      setSaving(false);
+    }
+  }
 
   return (
     <div className="max-w-xl mx-auto p-6 space-y-6">
